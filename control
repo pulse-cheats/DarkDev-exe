@@ -1,0 +1,9 @@
+Package: com.darkdev.executor
+Name: DarkDev Executor
+Depends: mobilesubstrate
+Version: 1.0.0
+Architecture: iphoneos-arm
+Description: Premium iOS Executor for Roblox Greek RP
+Maintainer: DarkDev
+Author: DarkDev
+Section: Tweaks
