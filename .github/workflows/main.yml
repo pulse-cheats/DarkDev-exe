@@ -15,10 +15,11 @@ jobs:
 
       - name: Setup Theos Environment
         run: |
-          echo "Setting up Theos for iOS Tweak Compilation..."
+          echo "Setting up Theos..."
           git clone --recursive https://github.com/theos/theos.git ~/theos
-          echo "THEOS=~/theos" >> $GITHUB_ENV
-          
+          echo "THEOS=$HOME/theos" >> $GITHUB_ENV
+          echo "THEOS_MAKEFILES_DIR=$HOME/theos/makefiles" >> $GITHUB_ENV
+
       - name: Setup iOS SDK
         run: |
           curl -LO https://github.com/theos/sdks/archive/master.zip
@@ -28,7 +29,8 @@ jobs:
 
       - name: Compile Dylib / Executor
         run: |
-          export THEOS=~/theos
+          export THEOS=$HOME/theos
+          export THEOS_MAKEFILES_DIR=$HOME/theos/makefiles
           make clean package FINALPACKAGE=1
 
       - name: Upload Built Dylib Artifact
