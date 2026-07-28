@@ -8,5 +8,6 @@ TWEAK_NAME = DarkDevExecutor
 
 DarkDevExecutor_FILES = Tweak.xm DarkDevUI.mm
 DarkDevExecutor_FRAMEWORKS = UIKit CoreGraphics Foundation
+DarkDevExecutor_CFLAGS = -Wno-error -Wno-deprecated-declarations
 
 include $(THEOS)/makefiles/tweak.mk
