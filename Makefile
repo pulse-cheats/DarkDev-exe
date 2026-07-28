@@ -1,3 +1,4 @@
+THEOS ?= $(HOME)/theos
 TARGET := iphone:clang:latest:14.0
 ARCHS = arm64 arm64e
 
@@ -8,4 +9,4 @@ TWEAK_NAME = DarkDevExecutor
 DarkDevExecutor_FILES = Tweak.xm DarkDevUI.mm
 DarkDevExecutor_FRAMEWORKS = UIKit CoreGraphics Foundation
 
-include $(THEOS_MAKEFILES_DIR)/tweak.mk
+include $(THEOS)/makefiles/tweak.mk
