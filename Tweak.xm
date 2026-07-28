@@ -7,16 +7,35 @@
 
 static UIButton *floatingBtn = nil;
 
+static UIWindow* GetKeyWindow() {
+    UIWindow *foundWindow = nil;
+    NSArray *scenes = [[UIApplication sharedApplication] connectedScenes].allObjects;
+    for (id scene in scenes) {
+        if ([scene isKindOfClass:NSClassFromString(@"UIWindowScene")]) {
+            NSArray *windows = [scene valueForKey:@"windows"];
+            for (UIWindow *window in windows) {
+                if (window.isKeyWindow) {
+                    return window;
+                }
+                if (!foundWindow && window.windowLevel == UIWindowLevelNormal) {
+                    foundWindow = window;
+                }
+            }
+        }
+    }
+    if (!foundWindow && [UIApplication sharedApplication].windows.count > 0) {
+        foundWindow = [UIApplication sharedApplication].windows.firstObject;
+    }
+    return foundWindow;
+}
+
 %hook UIApplication
 
 - (void)applicationDidFinishLaunching:(id)application {
     %orig;
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
-        if (!keyWindow && [UIApplication sharedApplication].windows.count > 0) {
-            keyWindow = [UIApplication sharedApplication].windows.firstObject;
-        }
+        UIWindow *keyWindow = GetKeyWindow();
         
         if (keyWindow) {
             // Floating Injector Button
@@ -48,7 +67,8 @@ static UIButton *floatingBtn = nil;
 
 %new
 - (void)toggleExecutorUI {
-    UIViewController *rootVC = [UIApplication sharedApplication].keyWindow.rootViewController;
+    UIWindow *keyWindow = GetKeyWindow();
+    UIViewController *rootVC = keyWindow ? keyWindow.rootViewController : nil;
     if (rootVC) {
         DarkDevExecutorUI *ui = [DarkDevExecutorUI sharedInstance];
         if (ui.view.superview) {
